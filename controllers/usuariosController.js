@@ -39,6 +39,7 @@ export const eliminarUsuarioController = async (request, response) => {
     const { id } = request.params;
     try {
         eliminarUsuario(id);
+        response.status(204).send(`usuario eliminado con id = ${id}.`);
     } catch (err) {
         response.status(500).send(`Error al eliminar usuario con id = ${id}`);
     }
