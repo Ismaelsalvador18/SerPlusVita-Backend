@@ -13,7 +13,7 @@ export function normalizarBooleans (objeto) {
         } else if (objeto[clave] === "false") {
             objeto[clave] = false;
         } else {
-            throw new Error(`El parametro ${clave} debe de ser 'true' o 'false`);
+            throw new Error(`El parametro ${clave} debe de ser 'true' o 'false'.`);
         }
     }
 

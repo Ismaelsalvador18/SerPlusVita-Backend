@@ -1,29 +1,66 @@
-import { actualizarPesoUsuario, obtenerUltimosPesos } from "../services/pesosService.js";
+import { actualizarPesoUsuario, listarPesosUltimosDias } from "../services/pesosService.js";
 
-export const guardarPesoController = async (request, response) => {
+export const crearPesoController = async (request, response) => {
     const {id} = request.params;
-    const {peso} = request.body;
+    const peso = parseFloat(request.body.peso);
+
+    if (isNaN(peso) || peso <= 0.0) {
+        return response.status(400).json({
+            data : null,
+            error : {
+                code : 400,
+                message : "Peso Invalido"
+            }
+        });
+    }
+
     try {
-        await actualizarPesoUsuario(id, peso);
+        const result = await actualizarPesoUsuario(id, peso);
         
-        response.status(201).send(`Peso ${peso} ingresado correctamente al usuario con id ${id} `);
+        response.status(201).json({
+            data : result,
+            error : null
+        });
 
     } catch (err) {
-        response.status(500).send(`Error al insertar el peso: ${peso} al usuario: ${id}`)
+        response.status(500).json({
+            data : null,
+            error : {
+                code : 500,
+                message : "Error al crear Peso."
+            } 
+        });
     }
 };
 
 export const listarPesosController = async (request, response) => {
     const { id } = request.params;
     const dias = parseInt(request.query.dias, 10);
+
+    if ( isNaN(dias) || dias <= 0) {
+        return response.status(400).json({
+            data: null,
+            error : {
+                code : 400,
+                message : "El parametro 'dias debe de ser un numero entero positivo valido."
+            }
+        });
+    }
+
     try {
-        if (isNaN(dias) || dias <= 0) {
-            return response.status(400).send(`El parametro 'dias' debe de ser un numero entero mayor a 0.`);
-        }
-        const pesosArray = await obtenerUltimosPesos(id, dias);
-        response.json(pesosArray);
+        const ultimosPesos = await listarPesosUltimosDias(id, dias);
+        response.status(200).json({
+            data : ultimosPesos,
+            error : null
+        });
     } catch (err) {
-        response.status(500).send(`Error al obtener los pesos de usuario con id ${id}.`);
+        response.status(500).json({
+            data: null,
+            error : {
+                code : 500,
+                message : `Error al obtener la lista de pesos de los ultimos ${dias} dias.`
+            }
+        });
     }
 };
 

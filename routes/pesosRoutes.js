@@ -1,9 +1,11 @@
 import express from "express";
-import { guardarPesoController, listarPesosController } from "../controllers/pesosController.js";
+import { crearPesoController, listarPesosController } from "../controllers/pesosController.js";
 
 const route = express.Router();
 
-route.post("/", guardarPesoController);
+route.post("/", crearPesoController);
+
+//      /:id/pesos?dias=7
 route.get("/:id/pesos", listarPesosController);
 
 export default route;
