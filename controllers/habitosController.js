@@ -1,4 +1,3 @@
-import { request, response } from "express";
 import { crearHabito, obtenerHabitoPorId, obtenerlistaHabitos } from "../services/habitosServices.js";
 import { normalizarBooleans } from "../utils/utils.js";
 

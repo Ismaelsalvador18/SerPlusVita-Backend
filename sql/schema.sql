@@ -33,17 +33,18 @@ CREATE TABLE habitos (
 );
 
 CREATE TABLE historial_habitos (
-	id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-	habito_id BIGINT NOT NULL,
-	fecha DATE NOT NULL,
-	completado BOOLEAN NOT NULL DEFAULT FALSE ,
-	CONSTRAINT fk_historial_habitos
-		FOREIGN KEY (habito_id)
-		REFERENCES habitos(id)
-		ON DELETE CASCADE
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    usuario_id BIGINT NOT NULL,
+    habito_id BIGINT NOT NULL,
+    fecha DATE NOT NULL,
+    completado BOOLEAN NOT NULL DEFAULT FALSE,
+    CONSTRAINT fk_historial_usuario
+        FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    CONSTRAINT fk_historial_habito
+        FOREIGN KEY (habito_id) REFERENCES habitos(id) ON DELETE CASCADE
 );
 
-CREATE UNIQUE INDEX ux_historial_habitos_habito_fecha ON historial_habitos (habito_id, fecha);
+CREATE UNIQUE INDEX ux_historial_habitos_usuario_habito_fecha ON historial_habitos (usuario_id, habito_id, fecha);
 
 CREATE TABLE metricas (
 	id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
