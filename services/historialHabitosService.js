@@ -40,7 +40,7 @@ export const actualizarACompletado = async (usuarioId, habitoId) => {
         [usuarioId, habitoId]
     );
 
-    return result.rows[0];
+    return reformatearDate(result.rows[0], "fecha");
 };
 
 export const eliminarHistorialAntiguo = async () => {

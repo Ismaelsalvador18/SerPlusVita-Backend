@@ -1,9 +1,9 @@
 import express from "express";
-import { actualizarACompletadoController, obtenerhistorialDeHabitosController } from "../controllers/historialHabitosController";
+import { actualizarACompletadoController, obtenerHistorialDeHabitosController } from "../controllers/historialHabitosController.js";
 
 const route = express.Router();
 
-route.get("/:id/habitos/historial", obtenerhistorialDeHabitosController);
-route.patch("/:id/habitos/:habitoId/historial/Completar", actualizarACompletadoController);
+route.get("/:id/historial-habitos", obtenerHistorialDeHabitosController);
+route.patch("/:id/habitos/:habitoId/Completar", actualizarACompletadoController);
 
 export default route;

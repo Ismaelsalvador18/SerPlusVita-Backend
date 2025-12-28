@@ -1,8 +1,7 @@
-import { actualizarACompletado, obtenerListaHistorialHabitos } from "../services/historialHabitosService";
+import { actualizarACompletado, obtenerListaHistorialHabitos } from "../services/historialHabitosService.js";
 
-export const obtenerhistorialDeHabitosController = async (request, response) => {
+export const obtenerHistorialDeHabitosController = async (request, response) => {
     const { id } = request.params;
-    
     try {
         const historialCompleto = await obtenerListaHistorialHabitos(id);
         response.status(200).json({
@@ -10,11 +9,13 @@ export const obtenerhistorialDeHabitosController = async (request, response) => 
             error : null
         });
     } catch (err) {
+        console.error("Error en obtenerHistorialDeHabitosController:", err);
         response.status(500).json({
             data : null,
             error : {
                 code : 500,
-                message : "Error al obtener el historial de los habitos del usuario."
+                message : "Error al obtener el historial de los habitos del usuario.",
+                err : err
             }
         });
     }
