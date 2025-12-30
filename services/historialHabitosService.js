@@ -39,7 +39,7 @@ export const actualizarACompletado = async (usuarioId, habitoId) => {
             RETURNING habito_id, fecha, completado`,
         [usuarioId, habitoId]
     );
-
+    if (result.rowCount === 0) return null;
     return reformatearDate(result.rows[0], "fecha");
 };
 

@@ -15,7 +15,6 @@ export const obtenerHistorialDeHabitosController = async (request, response) => 
             error : {
                 code : 500,
                 message : "Error al obtener el historial de los habitos del usuario.",
-                err : err
             }
         });
     }
@@ -26,6 +25,15 @@ export const actualizarACompletadoController = async (request, response) => {
     
     try {
         const historialActualizado = await actualizarACompletado(id, habitoId);
+        if (!historialActualizado) {
+            return response.status(404).json({
+                data: null,
+                error: { 
+                    code: 404, 
+                    message: `No se encontró historial para el hábito ${habitoId} en el día actual.` }
+            });
+        }
+
         response.status(200).json({
             data : historialActualizado,
             error : null

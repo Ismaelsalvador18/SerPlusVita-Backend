@@ -1,5 +1,6 @@
-import { crearHabito, obtenerHabitoPorId, obtenerlistaHabitos } from "../services/habitosServices.js";
 import { normalizarBooleans } from "../utils/utils.js";
+
+import { crearHabito, obtenerHabitoPorId, obtenerlistaHabitos, modificarHabito, eliminarHabito } from "../services/habitosServices.js";
 
 export const crearHabitoController = async (request, response) => {
     const { id } = request.params;

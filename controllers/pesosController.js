@@ -42,7 +42,7 @@ export const listarPesosController = async (request, response) => {
             data: null,
             error : {
                 code : 400,
-                message : "El parametro 'dias debe de ser un numero entero positivo valido."
+                message : "El parametro 'dias debe ser un numero entero positivo valido."
             }
         });
     }

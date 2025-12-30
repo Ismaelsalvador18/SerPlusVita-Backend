@@ -1,22 +1,17 @@
 import express from "express";
-import { crearUsuarioController, 
-    obtenerUsuarioPorIdController, 
-    actualizarUsuarioController, 
-    eliminarUsuarioController, 
-    obtenerUsuarioPorCorreoController, 
-    convertirInvitadoController 
+import { requireOwner } from "../middlewares/requireOwner.js";
+
+import { obtenerUsuarioPorIdController, actualizarUsuarioController, 
+    eliminarUsuarioController, convertirInvitadoController 
 } from "../controllers/usuariosController.js";
 
 const router = express.Router();
 
-router.post("/", crearUsuarioController);
+router.get("/:id", requireOwner, obtenerUsuarioPorIdController);
 
-router.get("/", obtenerUsuarioPorCorreoController);     // para login 
-router.get("/:id", obtenerUsuarioPorIdController);
+router.patch("/:id", requireOwner, actualizarUsuarioController);
+router.patch("/:id/convertir", requireOwner, convertirInvitadoController);
 
-router.patch("/:id", actualizarUsuarioController);
-router.patch("/:id/convertir", convertirInvitadoController);
-
-router.delete("/:id", eliminarUsuarioController);
+router.delete("/:id", requireOwner, eliminarUsuarioController);
 
 export default router;
