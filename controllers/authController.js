@@ -5,8 +5,11 @@ import { loginUsuario } from "../services/authServices.js";
 import { crearUsuario } from "../services/usuariosService.js";
 
 export const registrarUsuarioController = async (request, response) => {
-
-    const camposRequeridos = ["correo", "contrasena", "nombre", "altura", "peso", "fecha_nacimiento", "invitado"];
+    let camposRequeridos = ["correo", "contrasena", "nombre", "altura", "peso", "fecha_nacimiento", "invitado"];
+    if (request.body.invitado !== null && request.body.invitado) {
+        request.body.correo = null;
+        request.body.contrasena = null;
+    } 
     const faltantes = camposRequeridos.filter( campo => !request.body.hasOwnProperty(campo));
     if (faltantes.length > 0) {
         return response.status(400).json({
@@ -16,14 +19,12 @@ export const registrarUsuarioController = async (request, response) => {
                 message: `Faltan campos: ${faltantes.join(", ")}` }
         });
     }
-
+    
     try {
-        const bodyNormalizado = normalizarBooleans({ invitado: request.body.invitado });
-        request.body.invitado = bodyNormalizado.invitado;
-
         const nuevoUsuario = await crearUsuario(request.body);
+        console.log(request.body);
         const token = generarToken({ id: nuevoUsuario.id });
-
+        
         return response.status(201).json({
             data : {
                 id : nuevoUsuario.id,
@@ -40,6 +41,7 @@ export const registrarUsuarioController = async (request, response) => {
                 message: "Error al registrar usuario."
             }
         });
+        
     } 
 
 }; 
@@ -59,7 +61,7 @@ export const loginController = async (request, response) => {
 
     try {
         const sesion = await loginUsuario(correo, contrasena);
-
+        console.log(sesion);
         if (!sesion) {
             return response.status(401).json({ 
                 data: null,

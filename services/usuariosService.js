@@ -4,8 +4,12 @@ import { reformatearDate } from "../utils/utils.js";
 import bcrypt from "bcrypt";
 
 export const crearUsuario = async (usuario) => {
+    console.log(usuario);
+    const constrasenaHasheada = null;
 
-    const constrasenaHasheada = await bcrypt.hash(usuario.contrasena, 10);
+    if (usuario.contrasena !== null && usuario.invitado === false){
+        constrasenaHasheada = await bcrypt.hash(usuario.contrasena, 10);
+    }
 
     const result = await pool.query(
             `INSERT INTO usuarios (correo, contrasena, nombre, altura, peso, fecha_nacimiento, invitado)
@@ -60,7 +64,7 @@ export const actualizarDatosUsuario = async (id, datos) => {
 
     const result = await pool.query(
         `UPDATE usuarios SET ${declaracion} WHERE id = $${keys.length + 1}
-        RETURNING id, nombre, altura, peso, fecha_nacimiento`,
+        RETURNING nombre, altura, peso, fecha_nacimiento`,
         [...values, id] 
     );
 

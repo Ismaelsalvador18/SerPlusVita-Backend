@@ -18,16 +18,26 @@ export const crearHabito = async (usuarioId, habito) => {
 };
 
 export const obtenerlistaHabitos = async (usuarioId, habilitado, detalles) => {
-
     const campos = detalles === false ?
-        "id, titulo, habilitado" :
-        "id, titulo, descripcion, recordatorio, habilitado" ;
+        "h.id, h.titulo, h.habilitado" :
+        "h.id, h.titulo, h.descripcion, h.recordatorio, h.habilitado";
 
-    let consulta =`SELECT ${campos} FROM habitos WHERE usuario_id = $1`;
+    let consulta = `
+        SELECT ${campos},
+               EXISTS(
+                 SELECT 1 FROM historial_habitos 
+                 WHERE habito_id = h.id 
+                   AND usuario_id = h.usuario_id 
+                   AND completado = true 
+                   AND DATE(fecha) = CURRENT_DATE
+               ) as completado
+        FROM habitos h
+        WHERE h.usuario_id = $1`;
+
     const parametros = [usuarioId];
 
     if (habilitado !== undefined) {
-        consulta += ` AND habilitado = $2` 
+        consulta += ` AND h.habilitado = $2`;
         parametros.push(habilitado);
     }
 

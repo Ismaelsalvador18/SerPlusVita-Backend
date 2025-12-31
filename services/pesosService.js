@@ -3,15 +3,12 @@ import { reformatearDate } from "../utils/utils.js";
 
 export const actualizarPesoUsuario = async (usuarioId, peso) => {
     const registroPeso = await upsertPeso(usuarioId, peso);
-    const usuarioActualizado = await pool.query(
+    await pool.query(
         `UPDATE usuarios SET peso = $1 WHERE id = $2
         RETURNING id, nombre, peso`,
         [peso, usuarioId]  
     );
-    return {
-        peso : registroPeso,
-        usuario : usuarioActualizado.rows[0]
-    };
+    return registroPeso;
 }; 
 
 export const upsertPeso = async (usuarioId, peso) => {
@@ -19,7 +16,7 @@ export const upsertPeso = async (usuarioId, peso) => {
         `INSERT INTO pesos (usuario_id, fecha, peso) VALUES ($1, CURRENT_DATE, $2)
             ON CONFLICT (usuario_id, fecha) 
             DO UPDATE SET peso = EXCLUDED.peso
-            RETURNING usuario_id, peso, fecha`,
+            RETURNING peso, fecha`,
         [usuarioId, peso]
     );
     return reformatearDate(result.rows[0], "fecha");

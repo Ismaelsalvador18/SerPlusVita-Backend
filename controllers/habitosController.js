@@ -6,7 +6,7 @@ export const crearHabitoController = async (request, response) => {
     const { id } = request.params;
     const camposRequeridos = ["titulo", "descripcion", "recordatorio", "habilitado"];
     const faltantes = camposRequeridos.filter( campo => !request.body.hasOwnProperty(campo));
-
+    console.log(request.body)
     if (faltantes.length > 0) {
         return response.status(400).json({
             data: null,
@@ -35,7 +35,7 @@ export const crearHabitoController = async (request, response) => {
 
 export const listarHabitosController = async (request, response) => {
     const { id } = request.params;
-    
+    console.log(id, request.query)
     try {
         const { habilitado , detalles } = normalizarBooleans(request.query);
 
