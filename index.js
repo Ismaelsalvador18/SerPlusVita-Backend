@@ -21,5 +21,5 @@ app.use("/auth", authRoutes);
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://10.144.253.59:${PORT}`);
+    console.log(`Servidor corriendo en http://192.168.1.5:${PORT}`);
 });

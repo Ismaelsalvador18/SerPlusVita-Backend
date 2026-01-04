@@ -37,6 +37,8 @@ export const listarPesosController = async (request, response) => {
     const { id } = request.params;
     const dias = parseInt(request.query.dias, 10);
 
+    console.log(request.query);
+
     if ( isNaN(dias) || dias <= 0) {
         return response.status(400).json({
             data: null,
@@ -49,6 +51,7 @@ export const listarPesosController = async (request, response) => {
 
     try {
         const ultimosPesos = await listarPesosUltimosDias(id, dias);
+        console.log(ultimosPesos);
         response.status(200).json({
             data : ultimosPesos,
             error : null

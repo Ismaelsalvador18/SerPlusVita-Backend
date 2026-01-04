@@ -3,10 +3,12 @@ import { obtenerUsuarioPorId , actualizarDatosUsuario, eliminarUsuario, obtenerU
 
 export const obtenerUsuarioPorIdController = async (request, response) => {
     const { id } = request.params;
+    console.log(id);
     try {
         const usuario = await obtenerUsuarioPorId(id);
-
+        console.log(usuario);
         if (!usuario) {
+            
             return response.status(404).json({
                 data : null,
                 error : {
@@ -15,6 +17,7 @@ export const obtenerUsuarioPorIdController = async (request, response) => {
                 }
             });
         }       
+        
         response.status(200).json({
             data : usuario,
             error : null

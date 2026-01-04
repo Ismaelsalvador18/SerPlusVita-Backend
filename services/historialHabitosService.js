@@ -48,4 +48,4 @@ export const eliminarHistorialAntiguo = async () => {
         `DELETE FROM historial_habitos WHERE fecha < CURRENT_DATE - INTERVAL '30 days'`,  
     );
     return result.rowCount;
-} ;
+};
